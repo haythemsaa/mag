@@ -5,6 +5,10 @@ use App\Http\Controllers\Api\DriverController;
 use App\Http\Controllers\Api\MaintenanceController;
 use App\Http\Controllers\Api\FuelTransactionController;
 use App\Http\Controllers\Api\OrganizationController;
+use App\Http\Controllers\Api\SiteController;
+use App\Http\Controllers\Api\WorkshopController;
+use App\Http\Controllers\Api\ContractController;
+use App\Http\Controllers\Api\CostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,4 +51,20 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('fuel-transactions/detect-anomalies', [FuelTransactionController::class, 'detectAnomalies']);
     Route::apiResource('fuel-transactions', FuelTransactionController::class);
     Route::post('fuel-transactions/{id}/validate', [FuelTransactionController::class, 'validate']);
+
+    // Sites
+    Route::apiResource('sites', SiteController::class);
+
+    // Workshops
+    Route::apiResource('workshops', WorkshopController::class);
+    Route::post('workshops/{id}/update-rating', [WorkshopController::class, 'updateRating']);
+
+    // Contracts
+    Route::get('contracts/expiring', [ContractController::class, 'expiring']);
+    Route::apiResource('contracts', ContractController::class);
+
+    // Costs
+    Route::get('costs/statistics', [CostController::class, 'statistics']);
+    Route::apiResource('costs', CostController::class);
+    Route::post('costs/{id}/validate', [CostController::class, 'validate']);
 });

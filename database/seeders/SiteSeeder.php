@@ -24,7 +24,6 @@ class SiteSeeder extends Seeder
                     'organization_id' => $organization->id,
                     'name' => $organization->name . ' - Site ' . $i,
                     'code' => strtoupper(substr($organization->name, 0, 3)) . '-' . str_pad($i, 2, '0', STR_PAD_LEFT),
-                    'type' => ['headquarters', 'branch', 'warehouse', 'depot'][array_rand(['headquarters', 'branch', 'warehouse', 'depot'])],
                     'address' => ($i * 10) . ' Rue Example',
                     'postal_code' => '750' . str_pad($i, 2, '0', STR_PAD_LEFT),
                     'city' => $organization->city,
@@ -34,9 +33,6 @@ class SiteSeeder extends Seeder
                     'phone' => '+3314' . rand(10000000, 99999999),
                     'manager_name' => ['Jean Dupont', 'Marie Martin', 'Pierre Durant', 'Sophie Bernard'][array_rand(['Jean Dupont', 'Marie Martin', 'Pierre Durant', 'Sophie Bernard'])],
                     'manager_email' => 'manager' . $i . '@' . str_replace(' ', '', strtolower($organization->name)) . '.fr',
-                    'max_capacity_vehicles' => rand(20, 100),
-                    'has_workshop' => (bool)rand(0, 1),
-                    'has_fuel_station' => (bool)rand(0, 1),
                     'is_active' => true,
                 ]);
             }
