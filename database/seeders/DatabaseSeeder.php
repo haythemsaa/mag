@@ -27,6 +27,9 @@ class DatabaseSeeder extends Seeder
             VehicleSeeder::class,
             MaintenanceSeeder::class,
             FuelTransactionSeeder::class,
+            ContractSeeder::class,
+            CostSeeder::class,
+            GpsPositionSeeder::class,
         ]);
 
         $this->command->info('Database seeded successfully with fleet management data!');

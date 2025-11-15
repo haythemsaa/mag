@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\SiteController;
 use App\Http\Controllers\Api\WorkshopController;
 use App\Http\Controllers\Api\ContractController;
 use App\Http\Controllers\Api\CostController;
+use App\Http\Controllers\Api\GpsPositionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -67,4 +68,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('costs/statistics', [CostController::class, 'statistics']);
     Route::apiResource('costs', CostController::class);
     Route::post('costs/{id}/validate', [CostController::class, 'validate']);
+
+    // GPS Positions
+    Route::get('gps-positions/live-tracking', [GpsPositionController::class, 'liveTracking']);
+    Route::get('gps-positions/geofence-alerts', [GpsPositionController::class, 'geofenceAlerts']);
+    Route::get('gps-positions/vehicle/{vehicleId}/latest', [GpsPositionController::class, 'latest']);
+    Route::get('gps-positions/vehicle/{vehicleId}/track', [GpsPositionController::class, 'track']);
+    Route::apiResource('gps-positions', GpsPositionController::class);
 });
