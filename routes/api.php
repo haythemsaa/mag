@@ -23,6 +23,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Organizations
     Route::apiResource('organizations', OrganizationController::class);
+    Route::get('organizations/{id}/statistics', [OrganizationController::class, 'statistics']);
+    Route::get('organizations/{id}/dashboard', [OrganizationController::class, 'dashboard']);
 
     // Vehicles
     Route::apiResource('vehicles', VehicleController::class);
@@ -35,8 +37,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('drivers', DriverController::class);
 
     // Maintenances
+    Route::get('maintenances/upcoming', [MaintenanceController::class, 'upcoming']);
+    Route::get('maintenances/overdue', [MaintenanceController::class, 'overdue']);
     Route::apiResource('maintenances', MaintenanceController::class);
+    Route::post('maintenances/{id}/complete', [MaintenanceController::class, 'complete']);
 
     // Fuel Transactions
+    Route::get('fuel-transactions/statistics', [FuelTransactionController::class, 'statistics']);
+    Route::post('fuel-transactions/detect-anomalies', [FuelTransactionController::class, 'detectAnomalies']);
     Route::apiResource('fuel-transactions', FuelTransactionController::class);
+    Route::post('fuel-transactions/{id}/validate', [FuelTransactionController::class, 'validate']);
 });
