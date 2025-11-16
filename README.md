@@ -68,15 +68,21 @@ Une plateforme moderne qui combine les meilleures fonctionnalités des leaders d
 - ✓ Ciblage par rôle pour chaque type d'alerte
 
 **Testing**
-- ✓ Tests unitaires (Policies, Modèles)
+- ✓ Tests unitaires (Policies, Modèles, Jobs, Notifications)
 - ✓ Tests features (API endpoints, Dashboard)
 - ✓ Tests d'autorisation multi-tenant
 - ✓ Coverage isolation des organisations
+- ✓ 42+ tests au total
+
+**Documentation**
+- ✓ Documentation API interactive avec Scribe
+- ✓ Collection Postman générée automatiquement
+- ✓ Spécification OpenAPI (Swagger)
+- ✓ Exemples de code en 4 langages
 
 ### 🚧 En Développement
 
 - 🔄 Interface web (Inertia.js + Vue.js 3)
-- 🔄 Génération automatique documentation API (Scribe)
 
 ### 📅 Roadmap
 
@@ -375,15 +381,37 @@ php artisan test --coverage --min=80
 
 ### Tests Actuels
 
-- ✓ 10 tests unitaires (VehiclePolicy)
+- ✓ 30+ tests unitaires (VehiclePolicy, Jobs, Notifications)
 - ✓ 12 tests features (Dashboard API)
-- ✓ Coverage : Policies, Controllers, Resources
-- 🔄 À venir : Tests modèles, jobs, notifications
+- ✓ Coverage : Policies, Controllers, Resources, Jobs, Notifications
+- ✓ Total : 42+ tests avec isolation multi-tenant complète
 
 ## 📖 Documentation
 
-### Documentation API
-La documentation API complète sera générée avec Scribe (à venir)
+### Documentation API Interactive
+
+La documentation API complète est générée automatiquement avec **Scribe** et accessible sur `/docs`.
+
+**Fonctionnalités :**
+- Documentation interactive de tous les endpoints (70+)
+- Exemples de requêtes en Bash, JavaScript, PHP, Python
+- Bouton "Try It Out" pour tester directement depuis le navigateur
+- Collection Postman téléchargeable
+- Spécification OpenAPI/Swagger
+
+**Accès :**
+```bash
+# En développement
+http://localhost:8000/docs
+
+# Régénérer la documentation après modifications
+php artisan scribe:generate
+```
+
+**Exports disponibles :**
+- `/docs` - Documentation HTML interactive
+- `/docs.postman` - Collection Postman
+- `/docs.openapi` - Spécification OpenAPI (YAML)
 
 ### Spécifications Fonctionnelles
 Consultez le document `SPECIFICATIONS.md` pour le cahier des charges complet

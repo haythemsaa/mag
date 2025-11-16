@@ -13,10 +13,69 @@ use App\Models\Vehicle;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Dashboard
+ *
+ * APIs for accessing dashboard KPIs and analytics
+ */
 class DashboardController extends Controller
 {
     /**
-     * Get comprehensive dashboard KPIs for an organization
+     * Get Dashboard KPIs
+     *
+     * Retrieve comprehensive dashboard with fleet statistics, costs, maintenance, drivers, fuel analytics, and alerts.
+     *
+     * @queryParam organization_id integer required Organization ID. Example: 1
+     * @queryParam start_date date Start date for cost/fuel analysis (default: first day of current month). Example: 2024-01-01
+     * @queryParam end_date date End date for cost/fuel analysis (default: last day of current month). Example: 2024-01-31
+     *
+     * @response 200 {
+     *   "data": {
+     *     "fleet": {
+     *       "total_vehicles": 25,
+     *       "active_vehicles": 20,
+     *       "by_fuel_type": {"diesel": 15, "gasoline": 8, "electric": 2},
+     *       "average_age": 3.5,
+     *       "total_mileage": 450000
+     *     },
+     *     "costs": {
+     *       "total_costs": 45000,
+     *       "trend_percentage": 12.5,
+     *       "by_category": {"maintenance": 20000, "fuel": 15000, "insurance": 10000}
+     *     },
+     *     "maintenance": {
+     *       "total": 50,
+     *       "pending": 10,
+     *       "overdue": 3,
+     *       "upcoming": 7,
+     *       "average_cost": 850
+     *     },
+     *     "drivers": {
+     *       "total": 30,
+     *       "licenses_expiring_soon": 2,
+     *       "average_eco_score": 7.5,
+     *       "total_infractions": 5
+     *     },
+     *     "fuel": {
+     *       "total_volume": 5000,
+     *       "total_cost": 9000,
+     *       "average_price_per_liter": 1.80,
+     *       "anomalies_count": 2,
+     *       "by_fuel_type": {"diesel": {"volume": 3500, "cost": 6300}, "gasoline": {"volume": 1500, "cost": 2700}}
+     *     },
+     *     "alerts": {
+     *       "maintenance_overdue": 3,
+     *       "licenses_expiring": 2,
+     *       "contracts_expiring": 1,
+     *       "pending_validations": 5
+     *     }
+     *   },
+     *   "period": {
+     *     "start_date": "2024-01-01",
+     *     "end_date": "2024-01-31"
+     *   },
+     *   "generated_at": "2024-01-15T10:30:00.000000Z"
+     * }
      */
     public function index(Request $request): JsonResponse
     {
@@ -198,7 +257,34 @@ class DashboardController extends Controller
     }
 
     /**
-     * Get real-time fleet status
+     * Get Live Fleet Status
+     *
+     * Retrieve real-time status of all active vehicles with their latest GPS positions.
+     *
+     * @queryParam organization_id integer required Organization ID. Example: 1
+     *
+     * @response 200 {
+     *   "data": [
+     *     {
+     *       "vehicle_id": 1,
+     *       "registration_number": "AB-123-CD",
+     *       "make": "Renault",
+     *       "model": "Kangoo",
+     *       "status": "active",
+     *       "latest_position": {
+     *         "latitude": 48.8566,
+     *         "longitude": 2.3522,
+     *         "speed": 45,
+     *         "timestamp": "2024-01-15T10:25:00.000000Z",
+     *         "address": "Paris, France"
+     *       },
+     *       "current_driver": {
+     *         "id": 5,
+     *         "name": "John Doe"
+     *       }
+     *     }
+     *   ]
+     * }
      */
     public function liveFleet(Request $request): JsonResponse
     {

@@ -207,13 +207,73 @@ $this->authorize('update', $vehicle);
 
 ## 📊 API Endpoints
 
+### 📖 Documentation API Interactive
+
+FleetManager Pro utilise **Scribe** pour générer automatiquement une documentation API interactive complète.
+
+**Accès :**
+- Documentation : `http://localhost:8000/docs`
+- Collection Postman : `http://localhost:8000/docs.postman`
+- Spécification OpenAPI : `http://localhost:8000/docs.openapi`
+
+**Fonctionnalités :**
+- Exemples en Bash, JavaScript, PHP, Python
+- Bouton "Try It Out" pour tester directement
+- Documentation de tous les endpoints avec paramètres et réponses
+- Téléchargement de la collection Postman
+
+**Régénérer la documentation :**
+```bash
+php artisan scribe:generate
+```
+
 ### Authentification
 
 ```http
-POST /api/login
-POST /api/register
-POST /api/logout
-GET  /api/user
+POST /api/login              # Connexion et obtention token
+POST /api/register           # Créer un nouveau compte
+POST /api/logout             # Déconnexion (révoque token actuel)
+POST /api/logout-all         # Déconnexion tous appareils
+GET  /api/me                 # Profil utilisateur avec rôles/permissions
+PUT  /api/profile            # Mettre à jour profil
+GET  /api/user               # (deprecated - utiliser /me)
+```
+
+**Exemple Login :**
+```bash
+curl -X POST http://localhost:8000/api/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "admin@fleetmanager.fr",
+    "password": "password",
+    "device_name": "iPhone 13"
+  }'
+
+# Response:
+{
+  "token": "1|abc123...",
+  "user": {
+    "id": 1,
+    "name": "Admin User",
+    "email": "admin@fleetmanager.fr",
+    "organization_id": 1,
+    "roles": ["super-admin"],
+    "permissions": ["organizations.view", "vehicles.create", ...]
+  }
+}
+```
+
+**Authentification des requêtes :**
+```bash
+curl -X GET http://localhost:8000/api/vehicles \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE"
+```
+
+### Dashboard
+
+```http
+GET /api/dashboard                    # KPIs complets (flotte, coûts, maintenance, drivers, fuel, alerts)
+GET /api/dashboard/live-fleet         # Suivi flotte temps réel avec GPS
 ```
 
 ### Organizations
@@ -319,6 +379,102 @@ numprocs=2
 redirect_stderr=true
 stdout_logfile=/path-to-your-project/storage/logs/worker.log
 stopwaitsecs=3600
+```
+
+## ✅ Validation avec FormRequests
+
+FleetManager Pro utilise des **FormRequests** pour une validation robuste et réutilisable.
+
+### FormRequests disponibles
+
+#### LoginRequest
+Validation de la connexion avec gestion des messages personnalisés.
+```php
+use App\Http\Requests\LoginRequest;
+
+public function login(LoginRequest $request) {
+    // Données déjà validées
+    $validated = $request->validated();
+}
+```
+
+#### StoreVehicleRequest
+Validation création véhicule avec :
+- Auto-injection de `organization_id` depuis l'utilisateur authentifié
+- Vérification unicité du numéro d'immatriculation et VIN
+- Validation des dates (assurance non expirée, etc.)
+- Statut par défaut "active" si non fourni
+- **Autorisation** : vérifie que l'utilisateur a la permission `vehicles.create`
+
+```php
+use App\Http\Requests\StoreVehicleRequest;
+
+public function store(StoreVehicleRequest $request) {
+    $vehicle = Vehicle::create($request->validated());
+    return response()->json($vehicle, 201);
+}
+```
+
+#### UpdateVehicleRequest
+Validation mise à jour véhicule avec :
+- Règles "sometimes" (optionnelles)
+- Exclusion ID actuel pour unicité
+- **Autorisation** : utilise VehiclePolicy->update()
+
+#### StoreMaintenanceRequest
+Validation création maintenance avec :
+- Auto-injection de `organization_id`
+- Calcul automatique de `total_cost` (labor_cost + parts_cost)
+- Statut par défaut "pending"
+- **Autorisation** : vérifie permission `maintenances.create`
+
+### Créer votre propre FormRequest
+
+```bash
+php artisan make:request StoreDriverRequest
+```
+
+```php
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class StoreDriverRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return $this->user()->can('drivers.create');
+    }
+
+    public function rules(): array
+    {
+        return [
+            'first_name' => 'required|string|max:100',
+            'last_name' => 'required|string|max:100',
+            'license_number' => 'required|string|unique:drivers',
+            // ...
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'license_number.unique' => 'Ce numéro de permis est déjà utilisé',
+        ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        // Auto-injection organization_id
+        if (!$this->has('organization_id') && $this->user()) {
+            $this->merge([
+                'organization_id' => $this->user()->organization_id,
+            ]);
+        }
+    }
+}
 ```
 
 ## 📝 Commandes Artisan Utiles

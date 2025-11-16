@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\VehicleController;
 use App\Http\Controllers\Api\DriverController;
 use App\Http\Controllers\Api\MaintenanceController;
@@ -19,10 +20,20 @@ Route::get('/health', function () {
     return response()->json(['status' => 'ok', 'timestamp' => now()]);
 });
 
+// Authentication routes (public)
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+
 // Protected routes (require authentication)
 Route::middleware('auth:sanctum')->group(function () {
 
-    // User route
+    // Authentication
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/logout-all', [AuthController::class, 'logoutAll']);
+    Route::get('/me', [AuthController::class, 'me']);
+    Route::put('/profile', [AuthController::class, 'updateProfile']);
+
+    // User route (deprecated - use /me instead)
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
