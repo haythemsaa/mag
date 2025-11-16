@@ -18,6 +18,8 @@ use App\Http\Controllers\Api\GeofenceController;
 use App\Http\Controllers\Api\ChargingStationController;
 use App\Http\Controllers\Api\ChargingSessionController;
 use App\Http\Controllers\Api\TheftAlertController;
+use App\Http\Controllers\Api\RouteController;
+use App\Http\Controllers\Api\RouteStopController;
 use App\Http\Controllers\Api\Mobile\MobileDriverController;
 use App\Http\Controllers\Api\Mobile\MobileIncidentController;
 use Illuminate\Http\Request;
@@ -173,6 +175,36 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/{theftAlert}/resolve', [TheftAlertController::class, 'resolve']);
         Route::post('/{theftAlert}/notify-police', [TheftAlertController::class, 'notifyPolice']);
         Route::post('/{theftAlert}/insurance-claim', [TheftAlertController::class, 'linkInsuranceClaim']);
+    });
+
+    // Routes
+    Route::prefix('routes')->group(function () {
+        Route::get('/', [RouteController::class, 'index']);
+        Route::post('/', [RouteController::class, 'store']);
+        Route::get('/statistics', [RouteController::class, 'statistics']);
+        Route::get('/{route}', [RouteController::class, 'show']);
+        Route::put('/{route}', [RouteController::class, 'update']);
+        Route::delete('/{route}', [RouteController::class, 'destroy']);
+        Route::post('/{route}/start', [RouteController::class, 'start']);
+        Route::post('/{route}/complete', [RouteController::class, 'complete']);
+        Route::post('/{route}/cancel', [RouteController::class, 'cancel']);
+        Route::post('/{route}/assign-vehicle', [RouteController::class, 'assignVehicle']);
+        Route::post('/{route}/assign-driver', [RouteController::class, 'assignDriver']);
+        Route::post('/{route}/optimize', [RouteController::class, 'optimize']);
+
+        // Route Stops
+        Route::get('/{route}/stops', [RouteStopController::class, 'index']);
+        Route::post('/{route}/stops', [RouteStopController::class, 'store']);
+        Route::get('/{route}/stops/{stop}', [RouteStopController::class, 'show']);
+        Route::put('/{route}/stops/{stop}', [RouteStopController::class, 'update']);
+        Route::delete('/{route}/stops/{stop}', [RouteStopController::class, 'destroy']);
+        Route::post('/{route}/stops/{stop}/arrive', [RouteStopController::class, 'arrive']);
+        Route::post('/{route}/stops/{stop}/start-service', [RouteStopController::class, 'startService']);
+        Route::post('/{route}/stops/{stop}/complete', [RouteStopController::class, 'complete']);
+        Route::post('/{route}/stops/{stop}/skip', [RouteStopController::class, 'skip']);
+        Route::post('/{route}/stops/{stop}/fail', [RouteStopController::class, 'fail']);
+        Route::post('/{route}/stops/{stop}/upload-signature', [RouteStopController::class, 'uploadSignature']);
+        Route::post('/{route}/stops/{stop}/upload-photo', [RouteStopController::class, 'uploadPhoto']);
     });
 
     // Mobile API - Driver
