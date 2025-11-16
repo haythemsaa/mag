@@ -84,25 +84,56 @@ Une plateforme moderne qui combine les meilleures fonctionnalités des leaders d
 
 - 🔄 Interface web (Inertia.js + Vue.js 3)
 
-### 📅 Roadmap
+### 📅 Roadmap & Documentation Produit
 
-**Phase 2 - Operations (Q1 2025)**
-- Géolocalisation temps réel sur carte
-- Application mobile conducteur
-- Gestion avancée carburant avec cartes
-- Module de planification de missions
+**📊 Analyse Concurrentielle**
+- ✅ **[COMPETITIVE_ANALYSIS.md](COMPETITIVE_ANALYSIS.md)** - Analyse complète des concurrents africains et européens
+  - MiX Telematics, Cartrack, Tracker (Afrique)
+  - GAC Car Fleet, Cegid Notilus, Phoenix Fleet Expert (Europe)
+  - Fleetio, Geotab, Verizon Connect (International)
+  - 15 modules prioritaires identifiés
+  - Gap analysis et recommandations
 
-**Phase 3 - Intelligence (Q2 2025)**
+**🗺️ Roadmap Produit**
+- ✅ **[PRODUCT_ROADMAP.md](PRODUCT_ROADMAP.md)** - Roadmap détaillée 2025-2026
+  - Q1 2025: Sécurité & Conformité (Infractions, Accidents, Géofences)
+  - Q2 2025: Green Fleet & Mobilité (VE, Bornes, App Mobile)
+  - Q3 2025: Optimisation (Routes, Analytics, Anti-Vol)
+  - Q4 2025: Intégrations (Dashcams, ANTAI, Exports)
+  - 2026: IA, Expansion internationale, Marketplace
+
+**🛠️ Guide d'Implémentation**
+- ✅ **[IMPLEMENTATION_GUIDE_INFRACTIONS.md](IMPLEMENTATION_GUIDE_INFRACTIONS.md)** - Guide complet Module Infractions
+  - Premier module prioritaire (15-20j)
+  - Migrations, Models, Controllers prêts à l'emploi
+  - Tests, Notifications, Documentation
+  - Checklist de livraison
+
+**Phase 2 - Q1 2025 (Jan-Mar): Sécurité & Conformité**
+- Module Infractions (amendes, points permis) - 🔴 PRIORITÉ HAUTE
+- Module Accidents (sinistres, assurances, réparations) - 🔴 PRIORITÉ HAUTE
+- Géofences & Zones (alertes entrée/sortie) - 🔴 PRIORITÉ HAUTE
+
+**Phase 3 - Q2 2025 (Apr-Jun): Green Fleet & Mobilité**
+- Support Véhicules Électriques (VE, bornes, CO2)
+- Application Mobile Conducteur (React Native)
+- Dashboard Transition Énergétique
+
+**Phase 4 - Q3 2025 (Jul-Sep): Optimisation**
+- Sécurité Anti-Vol (alertes, détection brouillage)
+- Optimisation Routes (multi-arrêts, ETA)
+- Exports Comptables (CSV, Excel, XML)
+
+**Phase 5 - Q4 2025 (Oct-Dec): Analytics & Intégrations**
+- Dashcams & Vidéo-Télématique
+- Analytics Avancée (scoring, prédictions)
+- Intégration ANTAI (France)
+
+**Phase 6 - 2026: Expansion & Innovation**
 - Machine Learning pour maintenance prédictive
-- Analytics avancés et BI
-- Optimisation de tournées (VRP)
-- API GraphQL
-
-**Phase 4 - Extensions (Q3 2025)**
-- Intégrations tierces (ANTAI, constructeurs)
-- Modules spécialisés (transport, logistique)
-- Marketplace d'extensions
-- Support multi-langues
+- Expansion internationale (multi-pays Afrique)
+- Marketplace intégrations tierces
+- White label option
 
 ## 🛠️ Stack Technologique
 
