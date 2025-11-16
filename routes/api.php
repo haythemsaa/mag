@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\WorkshopController;
 use App\Http\Controllers\Api\ContractController;
 use App\Http\Controllers\Api\CostController;
 use App\Http\Controllers\Api\GpsPositionController;
+use App\Http\Controllers\Api\DashboardController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+
+    // Dashboard
+    Route::get('dashboard', [DashboardController::class, 'index']);
+    Route::get('dashboard/live-fleet', [DashboardController::class, 'liveFleet']);
 
     // Organizations
     Route::apiResource('organizations', OrganizationController::class);

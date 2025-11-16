@@ -24,7 +24,8 @@ Une plateforme moderne qui combine les meilleures fonctionnalités des leaders d
 
 ### ✅ Implémenté (v0.1 - Foundation)
 
-- ✓ Architecture multi-tenant complète
+**Core Features**
+- ✓ Architecture multi-tenant complète avec isolation des données
 - ✓ Gestion des véhicules (CRUD complet)
 - ✓ Gestion des conducteurs
 - ✓ Gestion des contrats (leasing, assurance)
@@ -34,13 +35,48 @@ Une plateforme moderne qui combine les meilleures fonctionnalités des leaders d
 - ✓ Gestion des coûts et TCO
 - ✓ Gestion des ateliers/workshops
 
+**Security & Permissions**
+- ✓ Authentification multi-tenant avec Laravel Sanctum
+- ✓ Système de rôles et permissions granulaires (Spatie Permission)
+- ✓ 7 rôles prédéfinis : super-admin, organization-admin, fleet-manager, accountant, maintenance-manager, driver, viewer
+- ✓ 70+ permissions granulaires par module
+- ✓ Policies Laravel pour autorisation fine-grained
+- ✓ Middleware d'isolation des organisations
+
+**API & Resources**
+- ✓ API RESTful complète (70+ endpoints)
+- ✓ API Resources pour formatage cohérent des réponses
+- ✓ Validation robuste des requêtes
+- ✓ Support filtrage, tri, pagination
+
+**Dashboard & Analytics**
+- ✓ Dashboard KPIs temps réel
+- ✓ Statistiques flotte (véhicules par statut, type de carburant, âge moyen)
+- ✓ Analyse des coûts avec tendances
+- ✓ Suivi maintenance (en retard, à venir)
+- ✓ Monitoring conducteurs (permis, scores éco-conduite)
+- ✓ Analyse carburant avec détection d'anomalies
+- ✓ Système d'alertes temps réel
+
+**Notifications & Automation**
+- ✓ Système de notifications multi-canal (Email + Database)
+- ✓ Notifications maintenance (7 jours d'avance)
+- ✓ Alertes contrats expirants (30 jours)
+- ✓ Alertes permis conducteurs (60 jours)
+- ✓ Jobs en arrière-plan avec queues Redis
+- ✓ Scheduler Laravel pour envoi quotidien automatique
+- ✓ Ciblage par rôle pour chaque type d'alerte
+
+**Testing**
+- ✓ Tests unitaires (Policies, Modèles)
+- ✓ Tests features (API endpoints, Dashboard)
+- ✓ Tests d'autorisation multi-tenant
+- ✓ Coverage isolation des organisations
+
 ### 🚧 En Développement
 
-- 🔄 Authentification multi-tenant avec rôles (Sanctum + Spatie Permission)
-- 🔄 API RESTful complète
 - 🔄 Interface web (Inertia.js + Vue.js 3)
-- 🔄 Tableaux de bord analytics
-- 🔄 Système d'alertes et notifications
+- 🔄 Génération automatique documentation API (Scribe)
 
 ### 📅 Roadmap
 
@@ -153,6 +189,65 @@ php artisan serve
 
 L'application sera accessible sur `http://localhost:8000`
 
+### 🚀 Quick Start avec Données de Démo
+
+Pour démarrer rapidement avec des données de test complètes :
+
+```bash
+# 1. Seeder complet (roles, permissions, organizations, vehicles, etc.)
+php artisan db:seed
+
+# 2. Démarrer le queue worker pour les notifications
+php artisan queue:work
+
+# 3. Envoyer les alertes quotidiennes manuellement (optionnel)
+php artisan alerts:send-daily
+```
+
+**Compte administrateur par défaut :**
+- Email : `admin@fleetmanager.fr`
+- Password : `password`
+- Rôle : `super-admin`
+
+**Créer un utilisateur personnalisé :**
+```bash
+# Mode interactif
+php artisan user:create
+
+# Mode CLI
+php artisan user:create \
+  --name="John Doe" \
+  --email="john@example.com" \
+  --password="secret123" \
+  --organization=1 \
+  --role="fleet-manager"
+```
+
+**Tester le scheduler (cron jobs) :**
+```bash
+# Exécuter toutes les tâches planifiées
+php artisan schedule:work
+
+# Le scheduler enverra automatiquement les alertes quotidiennes à 8h00 (Europe/Paris)
+```
+
+**Accéder au Dashboard :**
+```bash
+# Obtenir un token API via POST /api/login
+# Puis accéder aux endpoints :
+GET /api/dashboard                    # KPIs complets
+GET /api/dashboard/live-fleet         # Suivi flotte temps réel
+GET /api/vehicles?include_tco=1       # Véhicules avec TCO
+```
+
+**Documentation détaillée :**
+
+Consultez `FLEET_MANAGER_SETUP.md` pour :
+- Configuration complète des rôles et permissions
+- Liste des 70+ endpoints API avec exemples
+- Configuration des notifications et jobs
+- Troubleshooting et FAQ
+
 ## 🗃️ Structure de la Base de Données
 
 ### Tables Principales
@@ -199,12 +294,24 @@ $vehicle->calculateAverageConsumption()
 
 ## 🔐 Sécurité
 
-- Protection CSRF native Laravel
-- Validation des données entrantes
-- Sanitization XSS
-- Politique de mots de passe forte (à venir)
-- 2FA optionnelle (à venir)
-- Logs d'audit complets (à venir)
+**Implémenté**
+- ✓ Protection CSRF native Laravel
+- ✓ Validation stricte des données entrantes (Form Requests)
+- ✓ Sanitization XSS automatique
+- ✓ Authentification API avec Laravel Sanctum (tokens)
+- ✓ Système de permissions granulaires (70+ permissions)
+- ✓ Policies Laravel pour autorisation au niveau objet
+- ✓ Isolation multi-tenant stricte (middleware + policies)
+- ✓ Super-admin bypass avec traçabilité
+- ✓ Protection des coûts validés (immuabilité métier)
+- ✓ Validation des accès organisation par organisation
+
+**À Venir**
+- 🔄 Politique de mots de passe forte configurable
+- 🔄 2FA optionnelle (TOTP)
+- 🔄 Logs d'audit complets avec Laravel Activity Log
+- 🔄 Rate limiting API par tenant
+- 🔄 Détection d'intrusion et alertes sécurité
 
 ## 📊 Architecture Multi-Tenant
 
@@ -229,13 +336,49 @@ Chaque organisation peut avoir :
 
 ## 🧪 Tests
 
+Le projet inclut une suite de tests complète pour garantir la qualité et la sécurité.
+
+### Tests Unitaires
+
+- **VehiclePolicyTest** : Tests d'autorisation multi-tenant
+  - Vérification super-admin bypass
+  - Tests isolation organisation
+  - Tests permissions granulaires
+  - Tests actions spécifiques (assignDriver, updateMileage, etc.)
+
+### Tests Features
+
+- **DashboardApiTest** : Tests API Dashboard
+  - Structure des réponses KPIs
+  - Calculs statistiques (flotte, coûts, maintenance, etc.)
+  - Filtrage par date
+  - Isolation multi-tenant
+  - Tests live-fleet avec GPS
+
+### Exécution
+
 ```bash
-# Exécuter les tests
+# Exécuter tous les tests
 php artisan test
 
-# Avec coverage
+# Tests avec output détaillé
+php artisan test --parallel
+
+# Tests spécifiques
+php artisan test --filter=VehiclePolicyTest
+php artisan test --filter=DashboardApiTest
+
+# Avec coverage (nécessite Xdebug/PCOV)
 php artisan test --coverage
+php artisan test --coverage --min=80
 ```
+
+### Tests Actuels
+
+- ✓ 10 tests unitaires (VehiclePolicy)
+- ✓ 12 tests features (Dashboard API)
+- ✓ Coverage : Policies, Controllers, Resources
+- 🔄 À venir : Tests modèles, jobs, notifications
 
 ## 📖 Documentation
 
