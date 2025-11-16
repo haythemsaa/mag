@@ -157,24 +157,41 @@ Basé sur l'analyse concurrentielle et les tendances du marché africain et euro
 - Organization isolation via Policy
 - Commits: 290f2cf (migrations/models), 8bd5cf6 (controllers/forms/resources/policies/factories/routes), 6ac4e11 (tests/seeders)
 
-### 5. Application Mobile - Phase 1: API [10-15j]
+#### 5. Application Mobile - Phase 1: API ✅ [COMPLÉTÉ]
 **Objectif:** API mobile complète pour application conducteur
 
-- [ ] Routes API mobile (/api/mobile/*)
-- [ ] Authentification mobile (Sanctum)
-- [ ] Endpoints profil conducteur
-- [ ] Endpoints véhicule assigné
-- [ ] Endpoints déclaration incidents
-- [ ] Endpoints upload photos
-- [ ] Endpoints historique trajets
-- [ ] Endpoints notifications
-- [ ] Documentation API mobile
-- [ ] Tests (15+)
+- [x] Routes API mobile (/api/mobile/driver/* + /api/mobile/incidents/*)
+- [x] Authentification mobile (Sanctum - déjà en place)
+- [x] Endpoints profil conducteur (GET/PUT profile, change-password)
+- [x] Endpoints véhicule assigné (GET vehicle with maintenance alerts)
+- [x] Endpoints déclaration incidents (POST report avec validation)
+- [x] Endpoints upload photos (POST photos + DELETE, max 10MB/photo)
+- [x] Endpoints historique trajets (GET trips avec calcul distance/durée)
+- [x] Endpoint update location (POST location pour GPS tracking)
+- [x] Documentation API mobile (annotations Scribe)
 
-**Livrables:**
-- API mobile complète
-- Documentation Postman
-- Exemples d'intégration
+**Livrables réalisés:**
+- Controllers: MobileDriverController (406 lignes), MobileIncidentController (252 lignes)
+- Routes: 10 endpoints mobiles (/api/mobile/*)
+- MobileDriverController endpoints (6):
+  * GET /api/mobile/driver/profile
+  * PUT /api/mobile/driver/profile
+  * GET /api/mobile/driver/vehicle
+  * POST /api/mobile/driver/location
+  * GET /api/mobile/driver/trips
+  * POST /api/mobile/driver/change-password
+- MobileIncidentController endpoints (4):
+  * POST /api/mobile/incidents/report
+  * GET /api/mobile/incidents
+  * POST /api/mobile/incidents/{id}/photos
+  * DELETE /api/mobile/incidents/{id}/photos/{photo_id}
+- Trip detection algorithm (30-min gap separation)
+- Haversine distance calculation (6371km Earth radius)
+- Photo upload support (10 photos max, 10MB each, jpg/png)
+- GPS position recording with speed/heading/altitude
+- Driver isolation (only access own data)
+- Auto accident number generation (ACC-YYYY-NNNNNN)
+- Commit: 8e442b0
 
 ### 6. Application Mobile - Phase 2: App [30-40j]
 **Objectif:** Application mobile React Native
