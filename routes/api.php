@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\ContractController;
 use App\Http\Controllers\Api\CostController;
 use App\Http\Controllers\Api\GpsPositionController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\InfractionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -91,4 +92,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('gps-positions/vehicle/{vehicleId}/latest', [GpsPositionController::class, 'latest']);
     Route::get('gps-positions/vehicle/{vehicleId}/track', [GpsPositionController::class, 'track']);
     Route::apiResource('gps-positions', GpsPositionController::class);
+
+    // Infractions
+    Route::prefix('infractions')->group(function () {
+        Route::get('/', [InfractionController::class, 'index']);
+        Route::post('/', [InfractionController::class, 'store']);
+        Route::get('/statistics', [InfractionController::class, 'statistics']);
+        Route::get('/{infraction}', [InfractionController::class, 'show']);
+        Route::put('/{infraction}', [InfractionController::class, 'update']);
+        Route::delete('/{infraction}', [InfractionController::class, 'destroy']);
+        Route::post('/{infraction}/pay', [InfractionController::class, 'markAsPaid']);
+        Route::post('/{infraction}/contest', [InfractionController::class, 'contest']);
+    });
 });
