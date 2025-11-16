@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\GpsPositionController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\InfractionController;
 use App\Http\Controllers\Api\AccidentController;
+use App\Http\Controllers\Api\GeofenceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -118,5 +119,16 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/{accident}/repaired', [AccidentController::class, 'markAsRepaired']);
         Route::post('/{accident}/close', [AccidentController::class, 'close']);
         Route::post('/{accident}/insurance-claim', [AccidentController::class, 'fileInsuranceClaim']);
+    });
+
+    // Geofences
+    Route::prefix('geofences')->group(function () {
+        Route::get('/', [GeofenceController::class, 'index']);
+        Route::post('/', [GeofenceController::class, 'store']);
+        Route::get('/events', [GeofenceController::class, 'events']);
+        Route::get('/{geofence}', [GeofenceController::class, 'show']);
+        Route::put('/{geofence}', [GeofenceController::class, 'update']);
+        Route::delete('/{geofence}', [GeofenceController::class, 'destroy']);
+        Route::get('/{geofence}/statistics', [GeofenceController::class, 'statistics']);
     });
 });
