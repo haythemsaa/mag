@@ -64,6 +64,7 @@ class DatabaseSeeder extends Seeder
             RouteSeeder::class,
             AccountingExportSeeder::class,
             DashcamEventSeeder::class,
+            DriverScoreSeeder::class,
         ]);
 
         $this->command->newLine();

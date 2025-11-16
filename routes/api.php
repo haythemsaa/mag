@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\RouteStopController;
 use App\Http\Controllers\Api\AccountingExportController;
 use App\Http\Controllers\Api\DashcamEventController;
 use App\Http\Controllers\Api\DashcamWebhookController;
+use App\Http\Controllers\Api\AnalyticsController;
 use App\Http\Controllers\Api\Mobile\MobileDriverController;
 use App\Http\Controllers\Api\Mobile\MobileIncidentController;
 use Illuminate\Http\Request;
@@ -246,6 +247,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/{event}/require-coaching', [DashcamEventController::class, 'requireCoaching']);
         Route::post('/{event}/complete-coaching', [DashcamEventController::class, 'completeCoaching']);
         Route::post('/{event}/dispute', [DashcamEventController::class, 'dispute']);
+    });
+
+    // Analytics - Driver Scoring
+    Route::prefix('analytics')->group(function () {
+        Route::get('/driver-scores', [AnalyticsController::class, 'driverScores']);
+        Route::get('/driver-scores/statistics', [AnalyticsController::class, 'scoringStatistics']);
+        Route::get('/driver-scores/leaderboard', [AnalyticsController::class, 'leaderboard']);
+        Route::get('/driver-scores/{driver}/history', [AnalyticsController::class, 'driverHistory']);
+        Route::post('/driver-scores/{driver}/calculate', [AnalyticsController::class, 'calculateScore']);
     });
 
     // Mobile API - Driver
