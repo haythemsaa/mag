@@ -15,6 +15,8 @@ use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\InfractionController;
 use App\Http\Controllers\Api\AccidentController;
 use App\Http\Controllers\Api\GeofenceController;
+use App\Http\Controllers\Api\ChargingStationController;
+use App\Http\Controllers\Api\ChargingSessionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -130,5 +132,26 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{geofence}', [GeofenceController::class, 'update']);
         Route::delete('/{geofence}', [GeofenceController::class, 'destroy']);
         Route::get('/{geofence}/statistics', [GeofenceController::class, 'statistics']);
+    });
+
+    // Charging Stations
+    Route::prefix('charging-stations')->group(function () {
+        Route::get('/', [ChargingStationController::class, 'index']);
+        Route::post('/', [ChargingStationController::class, 'store']);
+        Route::get('/{charging_station}', [ChargingStationController::class, 'show']);
+        Route::put('/{charging_station}', [ChargingStationController::class, 'update']);
+        Route::delete('/{charging_station}', [ChargingStationController::class, 'destroy']);
+        Route::get('/{charging_station}/statistics', [ChargingStationController::class, 'statistics']);
+    });
+
+    // Charging Sessions
+    Route::prefix('charging-sessions')->group(function () {
+        Route::get('/', [ChargingSessionController::class, 'index']);
+        Route::post('/', [ChargingSessionController::class, 'store']);
+        Route::get('/statistics', [ChargingSessionController::class, 'statistics']);
+        Route::get('/{charging_session}', [ChargingSessionController::class, 'show']);
+        Route::put('/{charging_session}', [ChargingSessionController::class, 'update']);
+        Route::delete('/{charging_session}', [ChargingSessionController::class, 'destroy']);
+        Route::post('/{charging_session}/complete', [ChargingSessionController::class, 'complete']);
     });
 });
