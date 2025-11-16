@@ -62,6 +62,7 @@ class DatabaseSeeder extends Seeder
             ChargingSessionSeeder::class,
             TheftAlertSeeder::class,
             RouteSeeder::class,
+            AccountingExportSeeder::class,
         ]);
 
         $this->command->newLine();

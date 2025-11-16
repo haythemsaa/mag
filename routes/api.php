@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\ChargingSessionController;
 use App\Http\Controllers\Api\TheftAlertController;
 use App\Http\Controllers\Api\RouteController;
 use App\Http\Controllers\Api\RouteStopController;
+use App\Http\Controllers\Api\AccountingExportController;
 use App\Http\Controllers\Api\Mobile\MobileDriverController;
 use App\Http\Controllers\Api\Mobile\MobileIncidentController;
 use Illuminate\Http\Request;
@@ -205,6 +206,19 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/{route}/stops/{stop}/fail', [RouteStopController::class, 'fail']);
         Route::post('/{route}/stops/{stop}/upload-signature', [RouteStopController::class, 'uploadSignature']);
         Route::post('/{route}/stops/{stop}/upload-photo', [RouteStopController::class, 'uploadPhoto']);
+    });
+
+    // Accounting Exports
+    Route::prefix('accounting-exports')->group(function () {
+        Route::get('/', [AccountingExportController::class, 'index']);
+        Route::post('/', [AccountingExportController::class, 'store']);
+        Route::get('/statistics', [AccountingExportController::class, 'statistics']);
+        Route::get('/default-account-mapping', [AccountingExportController::class, 'defaultAccountMapping']);
+        Route::post('/preview', [AccountingExportController::class, 'preview']);
+        Route::get('/{export}', [AccountingExportController::class, 'show']);
+        Route::delete('/{export}', [AccountingExportController::class, 'destroy']);
+        Route::get('/{export}/download', [AccountingExportController::class, 'download']);
+        Route::post('/{export}/retry', [AccountingExportController::class, 'retry']);
     });
 
     // Mobile API - Driver

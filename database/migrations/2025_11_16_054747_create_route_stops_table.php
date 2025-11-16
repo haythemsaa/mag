@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('location_name');
             $table->text('address');
             $table->decimal('latitude', 10, 7);
-            $table->decimal('longitude', 10, 7');
+            $table->decimal('longitude', 10, 7);
 
             // Contact information
             $table->string('contact_name')->nullable();
