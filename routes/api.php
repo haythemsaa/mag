@@ -17,6 +17,8 @@ use App\Http\Controllers\Api\AccidentController;
 use App\Http\Controllers\Api\GeofenceController;
 use App\Http\Controllers\Api\ChargingStationController;
 use App\Http\Controllers\Api\ChargingSessionController;
+use App\Http\Controllers\Api\Mobile\MobileDriverController;
+use App\Http\Controllers\Api\Mobile\MobileIncidentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -153,5 +155,23 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{charging_session}', [ChargingSessionController::class, 'update']);
         Route::delete('/{charging_session}', [ChargingSessionController::class, 'destroy']);
         Route::post('/{charging_session}/complete', [ChargingSessionController::class, 'complete']);
+    });
+
+    // Mobile API - Driver
+    Route::prefix('mobile/driver')->group(function () {
+        Route::get('/profile', [MobileDriverController::class, 'profile']);
+        Route::put('/profile', [MobileDriverController::class, 'updateProfile']);
+        Route::get('/vehicle', [MobileDriverController::class, 'assignedVehicle']);
+        Route::post('/location', [MobileDriverController::class, 'updateLocation']);
+        Route::get('/trips', [MobileDriverController::class, 'tripHistory']);
+        Route::post('/change-password', [MobileDriverController::class, 'changePassword']);
+    });
+
+    // Mobile API - Incidents
+    Route::prefix('mobile/incidents')->group(function () {
+        Route::post('/report', [MobileIncidentController::class, 'report']);
+        Route::get('/', [MobileIncidentController::class, 'list']);
+        Route::post('/{accident_id}/photos', [MobileIncidentController::class, 'uploadPhotos']);
+        Route::delete('/{accident_id}/photos/{photo_id}', [MobileIncidentController::class, 'deletePhoto']);
     });
 });
