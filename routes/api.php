@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\CostController;
 use App\Http\Controllers\Api\GpsPositionController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\InfractionController;
+use App\Http\Controllers\Api\AccidentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -103,5 +104,19 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{infraction}', [InfractionController::class, 'destroy']);
         Route::post('/{infraction}/pay', [InfractionController::class, 'markAsPaid']);
         Route::post('/{infraction}/contest', [InfractionController::class, 'contest']);
+    });
+
+    // Accidents
+    Route::prefix('accidents')->group(function () {
+        Route::get('/', [AccidentController::class, 'index']);
+        Route::post('/', [AccidentController::class, 'store']);
+        Route::get('/statistics', [AccidentController::class, 'statistics']);
+        Route::get('/{accident}', [AccidentController::class, 'show']);
+        Route::put('/{accident}', [AccidentController::class, 'update']);
+        Route::delete('/{accident}', [AccidentController::class, 'destroy']);
+        Route::post('/{accident}/expertised', [AccidentController::class, 'markAsExpertised']);
+        Route::post('/{accident}/repaired', [AccidentController::class, 'markAsRepaired']);
+        Route::post('/{accident}/close', [AccidentController::class, 'close']);
+        Route::post('/{accident}/insurance-claim', [AccidentController::class, 'fileInsuranceClaim']);
     });
 });
