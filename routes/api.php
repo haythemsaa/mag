@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\AccidentController;
 use App\Http\Controllers\Api\GeofenceController;
 use App\Http\Controllers\Api\ChargingStationController;
 use App\Http\Controllers\Api\ChargingSessionController;
+use App\Http\Controllers\Api\TheftAlertController;
 use App\Http\Controllers\Api\Mobile\MobileDriverController;
 use App\Http\Controllers\Api\Mobile\MobileIncidentController;
 use Illuminate\Http\Request;
@@ -155,6 +156,23 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{charging_session}', [ChargingSessionController::class, 'update']);
         Route::delete('/{charging_session}', [ChargingSessionController::class, 'destroy']);
         Route::post('/{charging_session}/complete', [ChargingSessionController::class, 'complete']);
+    });
+
+    // Theft Alerts
+    Route::prefix('theft-alerts')->group(function () {
+        Route::get('/', [TheftAlertController::class, 'index']);
+        Route::post('/', [TheftAlertController::class, 'store']);
+        Route::get('/statistics', [TheftAlertController::class, 'statistics']);
+        Route::get('/{theftAlert}', [TheftAlertController::class, 'show']);
+        Route::put('/{theftAlert}', [TheftAlertController::class, 'update']);
+        Route::delete('/{theftAlert}', [TheftAlertController::class, 'destroy']);
+        Route::post('/{theftAlert}/assign', [TheftAlertController::class, 'assign']);
+        Route::post('/{theftAlert}/investigate', [TheftAlertController::class, 'investigate']);
+        Route::post('/{theftAlert}/false-alarm', [TheftAlertController::class, 'markFalseAlarm']);
+        Route::post('/{theftAlert}/confirm-theft', [TheftAlertController::class, 'confirmTheft']);
+        Route::post('/{theftAlert}/resolve', [TheftAlertController::class, 'resolve']);
+        Route::post('/{theftAlert}/notify-police', [TheftAlertController::class, 'notifyPolice']);
+        Route::post('/{theftAlert}/insurance-claim', [TheftAlertController::class, 'linkInsuranceClaim']);
     });
 
     // Mobile API - Driver

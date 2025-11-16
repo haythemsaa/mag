@@ -55,6 +55,12 @@ class DatabaseSeeder extends Seeder
             ContractSeeder::class,
             CostSeeder::class,
             GpsPositionSeeder::class,
+            GeofenceSeeder::class,
+            InfractionSeeder::class,
+            AccidentSeeder::class,
+            ChargingStationSeeder::class,
+            ChargingSessionSeeder::class,
+            TheftAlertSeeder::class,
         ]);
 
         $this->command->newLine();

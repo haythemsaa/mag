@@ -50,7 +50,7 @@ return new class extends Migration
             // Costs
             $table->decimal('cost_per_kwh', 8, 4)->nullable(); // Cost per kWh
             $table->decimal('connection_fee', 8, 2)->nullable(); // Fixed connection fee
-            $table->decimal('monthly_subscription', 8, 2')->nullable(); // Monthly subscription cost
+            $table->decimal('monthly_subscription', 8, 2)->nullable(); // Monthly subscription cost
 
             // Usage statistics
             $table->integer('total_sessions')->default(0);
