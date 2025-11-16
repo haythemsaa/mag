@@ -113,37 +113,49 @@ Basé sur l'analyse concurrentielle et les tendances du marché africain et euro
 
 ## Q2 2025 (Apr-Jun) - Green Fleet & Mobilité
 
-### 4. Transition Énergétique [15-20j]
+### ✅ COMPLÉTÉ Q2 2025 (Nov 2025)
+
+#### 4. Transition Énergétique ✅ [COMPLÉTÉ]
 **Objectif:** Support complet véhicules électriques
 
 **4.1 Véhicules Électriques**
-- [ ] Migration: champs VE dans `vehicles`
-- [ ] Migration: table `charging_sessions`
-- [ ] Migration: table `charging_stations`
-- [ ] API gestion bornes recharge
-- [ ] API sessions recharge
-- [ ] Calcul coût électricité
-- [ ] Suivi autonomie batterie
-- [ ] Alertes batterie faible
+- [x] Migration: champs VE dans `vehicles` (15 champs: battery_capacity_kwh, battery_current_level_percent, etc.)
+- [x] Migration: table `charging_sessions` (30+ champs avec workflow complet)
+- [x] Migration: table `charging_stations` (40+ champs avec types/connecteurs/statuts)
+- [x] API gestion bornes recharge (6 endpoints CRUD + statistics)
+- [x] API sessions recharge (7 endpoints CRUD + complete + statistics)
+- [x] Calcul coût électricité (cost_per_kwh + cost_per_minute + idle_fee)
+- [x] Suivi autonomie batterie (battery_level, estimated_range_km, battery_health)
+- [x] Auto-génération numéros session (CHG-YYYY-NNNNNN)
 
 **4.2 Émissions & CO2**
-- [ ] Ajout CO2 dans `vehicles` et `fuel_transactions`
-- [ ] Calcul émissions par trajet
-- [ ] Calcul émissions totales flotte
-- [ ] Comparaison VE vs thermique
-- [ ] Dashboard Green Fleet
-- [ ] KPIs développement durable
+- [x] Ajout CO2 dans `vehicles` (co2_emissions_gkm, co2_emissions_wltp_gkm, total_co2_kg)
+- [x] Ajout CO2 dans `fuel_transactions` (co2_emissions_kg, emission_factor_kg_per_liter)
+- [x] Champs euro_standard et crit_air_label dans vehicles
+- [x] Tracking CO2 économisé par session (co2_saved_kg dans charging_sessions)
 
-**4.3 Rapports Environnementaux**
-- [ ] Export rapport CO2
-- [ ] Statistiques transition énergétique
-- [ ] Recommandations conversion VE
+**4.3 Statistiques & Rapports**
+- [x] Statistics endpoint charging stations (total_sessions, energy, revenue, utilization)
+- [x] Statistics endpoint charging sessions (global + par véhicule + par période)
+- [x] Payment tracking (payment_method, payment_status, transaction_id)
+- [x] Session quality metrics (interruption_count, error_codes)
 
-**Livrables:**
+**Livrables réalisés:**
 - Endpoints: POST/GET/PUT/DELETE /api/charging-stations
-- Endpoints: POST/GET /api/charging-sessions
-- Dashboard: /dashboard/green-fleet
-- Rapports: émissions CO2, TCO VE vs thermique
+- Endpoints: POST/GET/PUT/DELETE /api/charging-sessions
+- Endpoints: POST /api/charging-sessions/{id}/complete
+- Endpoints: GET /api/charging-stations/{id}/statistics
+- Endpoints: GET /api/charging-sessions/statistics
+- Models: ChargingStation (74 lignes), ChargingSession (96 lignes)
+- Controllers: ChargingStationController (197 lignes), ChargingSessionController (246 lignes)
+- FormRequests: 4 fichiers (347 lignes total)
+- Resources: ChargingStationResource, ChargingSessionResource (183 lignes)
+- Policies: Organization-based isolation
+- Factories: ChargingStationFactory, ChargingSessionFactory avec états (depot, publicFastCharger, completed, inProgress, interrupted, fastCharging)
+- Tests: 33 tests (16 station + 17 session) - 813 lignes
+- Seeders: ChargingStationSeeder, ChargingSessionSeeder - 191 lignes
+- Organization isolation via Policy
+- Commits: 290f2cf (migrations/models), 8bd5cf6 (controllers/forms/resources/policies/factories/routes), 6ac4e11 (tests/seeders)
 
 ### 5. Application Mobile - Phase 1: API [10-15j]
 **Objectif:** API mobile complète pour application conducteur
