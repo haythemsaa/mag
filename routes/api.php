@@ -21,6 +21,8 @@ use App\Http\Controllers\Api\TheftAlertController;
 use App\Http\Controllers\Api\RouteController;
 use App\Http\Controllers\Api\RouteStopController;
 use App\Http\Controllers\Api\AccountingExportController;
+use App\Http\Controllers\Api\DashcamEventController;
+use App\Http\Controllers\Api\DashcamWebhookController;
 use App\Http\Controllers\Api\Mobile\MobileDriverController;
 use App\Http\Controllers\Api\Mobile\MobileIncidentController;
 use Illuminate\Http\Request;
@@ -34,6 +36,17 @@ Route::get('/health', function () {
 // Authentication routes (public)
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+
+// Dashcam Webhooks (public - for external providers)
+Route::prefix('webhooks/dashcam')->group(function () {
+    Route::post('/', [DashcamWebhookController::class, 'receive']);
+    Route::post('/mobileye', [DashcamWebhookController::class, 'mobileye']);
+    Route::post('/lytx', [DashcamWebhookController::class, 'lytx']);
+    Route::post('/surfsight', [DashcamWebhookController::class, 'surfsight']);
+    Route::post('/smartwitness', [DashcamWebhookController::class, 'smartwitness']);
+    Route::post('/samsara', [DashcamWebhookController::class, 'samsara']);
+    Route::post('/geotab', [DashcamWebhookController::class, 'geotab']);
+});
 
 // Protected routes (require authentication)
 Route::middleware('auth:sanctum')->group(function () {
@@ -219,6 +232,20 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{export}', [AccountingExportController::class, 'destroy']);
         Route::get('/{export}/download', [AccountingExportController::class, 'download']);
         Route::post('/{export}/retry', [AccountingExportController::class, 'retry']);
+    });
+
+    // Dashcam Events
+    Route::prefix('dashcam-events')->group(function () {
+        Route::get('/', [DashcamEventController::class, 'index']);
+        Route::get('/statistics', [DashcamEventController::class, 'statistics']);
+        Route::get('/{event}', [DashcamEventController::class, 'show']);
+        Route::delete('/{event}', [DashcamEventController::class, 'destroy']);
+        Route::post('/{event}/review', [DashcamEventController::class, 'review']);
+        Route::post('/{event}/acknowledge', [DashcamEventController::class, 'acknowledge']);
+        Route::post('/{event}/dismiss', [DashcamEventController::class, 'dismiss']);
+        Route::post('/{event}/require-coaching', [DashcamEventController::class, 'requireCoaching']);
+        Route::post('/{event}/complete-coaching', [DashcamEventController::class, 'completeCoaching']);
+        Route::post('/{event}/dispute', [DashcamEventController::class, 'dispute']);
     });
 
     // Mobile API - Driver
