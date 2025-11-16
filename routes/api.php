@@ -24,6 +24,7 @@ use App\Http\Controllers\Api\AccountingExportController;
 use App\Http\Controllers\Api\DashcamEventController;
 use App\Http\Controllers\Api\DashcamWebhookController;
 use App\Http\Controllers\Api\AnalyticsController;
+use App\Http\Controllers\Api\PredictionsController;
 use App\Http\Controllers\Api\Mobile\MobileDriverController;
 use App\Http\Controllers\Api\Mobile\MobileIncidentController;
 use Illuminate\Http\Request;
@@ -256,6 +257,22 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/driver-scores/leaderboard', [AnalyticsController::class, 'leaderboard']);
         Route::get('/driver-scores/{driver}/history', [AnalyticsController::class, 'driverHistory']);
         Route::post('/driver-scores/{driver}/calculate', [AnalyticsController::class, 'calculateScore']);
+    });
+
+    // Predictions - Predictive Maintenance
+    Route::prefix('predictions')->group(function () {
+        Route::get('/', [PredictionsController::class, 'index']);
+        Route::get('/statistics', [PredictionsController::class, 'statistics']);
+        Route::get('/overdue', [PredictionsController::class, 'overdue']);
+        Route::get('/due-soon', [PredictionsController::class, 'dueSoon']);
+        Route::get('/critical', [PredictionsController::class, 'critical']);
+        Route::post('/generate-all', [PredictionsController::class, 'generateAll']);
+        Route::get('/{prediction}', [PredictionsController::class, 'show']);
+        Route::delete('/{prediction}', [PredictionsController::class, 'destroy']);
+        Route::post('/{prediction}/acknowledge', [PredictionsController::class, 'acknowledge']);
+        Route::post('/{prediction}/dismiss', [PredictionsController::class, 'dismiss']);
+        Route::get('/vehicle/{vehicle}', [PredictionsController::class, 'byVehicle']);
+        Route::post('/vehicle/{vehicle}/generate', [PredictionsController::class, 'generate']);
     });
 
     // Mobile API - Driver
