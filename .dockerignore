@@ -1,0 +1,72 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+CONTRIBUTING.md
+CHANGELOG.md
+SESSION_SUMMARY.md
+FINAL_SUMMARY.md
+SESSION_COMPLETE.txt
+FLEET_MANAGER_SETUP.md
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+*~
+
+# Dependencies
+/vendor
+/node_modules
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Testing
+/tests
+phpunit.xml
+.phpunit.result.cache
+coverage
+
+# Build artifacts
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Laravel
+/bootstrap/cache/*
+/storage/app/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*
+!.gitkeep
+
+# Scribe
+/.scribe
+/public/vendor/scribe
+/resources/views/scribe
+/storage/app/private/scribe
+
+# Docker
+docker-compose.yml
+docker-compose.*.yml
+Dockerfile
+.dockerignore
